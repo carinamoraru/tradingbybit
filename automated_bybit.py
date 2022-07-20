@@ -9,23 +9,23 @@ import json
 import logging
 
 live = 0
-mysql_host = "us-cdbr-east-06.cleardb.net"
-mysql_dbname = "heroku_42b1a7a586099e3"
-mysql_username = "b9bf09310bc7a9"
-mysql_password = "a03f30ecf1dee90"
-mysql_host = "localhost"
-mysql_dbname = "trading"
-mysql_username = "root"
-mysql_password = ""
-today = datetime.datetime.now()
-
-# write and load log data for bot log table
-conn = pymysql.connect(host=mysql_host,
-                       user=mysql_username,
-                       password=mysql_password,
-                       db=mysql_dbname,
-                       charset='utf8')
-cur = conn.cursor()
+# mysql_host = "us-cdbr-east-06.cleardb.net"
+# mysql_dbname = "heroku_42b1a7a586099e3"
+# mysql_username = "b9bf09310bc7a9"
+# mysql_password = "a03f30ecf1dee90"
+# mysql_host = "localhost"
+# mysql_dbname = "trading"
+# mysql_username = "root"
+# mysql_password = ""
+# today = datetime.datetime.now()
+#
+# # write and load log data for bot log table
+# conn = pymysql.connect(host=mysql_host,
+#                        user=mysql_username,
+#                        password=mysql_password,
+#                        db=mysql_dbname,
+#                        charset='utf8')
+# cur = conn.cursor()
 
 @app.route('/', methods=['GET', 'POST'])
 # @app.route('/<int:uid>', methods=['GET','POST'])
@@ -54,38 +54,13 @@ def index():
         close = ""
         volume = ""
 
-        if passphrase == config.WEBHOOK_PASSPHRASE:
-            sql = """insert into `bot_log` (id, bot_name, bot_time, exchange, ticker, bar_time, bar_open, bar_high, bar_low, 
-            bar_close, bar_volumn, position_size, order_action, order_contracts, order_price, order_id, market_position, 
-            market_position_size, prev_market_position, prev_market_position_size, created_at, updated_at) values (NULL, %s, 
-            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
-            myBybit = my_bybit.Mybybit(live)
-            json_result = myBybit.inverse_get_json("ETHUSD", "D", "1653408000")
-            logging.error('%s raised an error', data)
-
-    # running query command
-            conn.ping()  # reconnecting mysql
-            # with conn.cursor() as cur:
-            #     cur.execute(sql, (
-            #     bot_name, timenow, exchange, ticker, bartime, open, high, low, close, volume, position_size,
-            #     order_action, order_contracts, order_price, order_id, market_position, market_position_size,
-            #     prev_market_position, prev_market_position_size, today, today))
-            conn.cursor().execute(sql, (
-                bot_name, timenow, exchange, ticker, bartime, open, high, low, close, volume, position_size,
-                order_action, order_contracts, order_price, order_id, market_position, market_position_size,
-                prev_market_position, prev_market_position_size, today, today))
-
-            conn.commit()
-        else:
-            myBybit = my_bybit.Mybybit(live)
-            json_result = myBybit.inverse_get_json("ETHUSD", "D", "1653408000")
-
-        return render_template('home.html', data=data, json_result=json_result['result'], len=len(json_result['result']))
+        return render_template('home.html', data=data)
     else:
-        ticker = "no post"
-        myBybit = my_bybit.Mybybit(live)
-        json_result = myBybit.inverse_get_json("BTCUSD", "D", "1653408000")
-    return render_template('home.html', ticker=ticker, json_result=json_result['result'], len=len(json_result['result']))
+        # ticker = "no post"
+        # myBybit = my_bybit.Mybybit(live)
+        # json_result = myBybit.inverse_get_json("BTCUSD", "D", "1653408000")
+    return "hello"
+    # return render_template('home.html', ticker=ticker, json_result=json_result['result'], len=len(json_result['result']))
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():

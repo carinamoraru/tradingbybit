@@ -59,7 +59,7 @@ def index():
         # ticker = "no post"
         # myBybit = my_bybit.Mybybit(live)
         # json_result = myBybit.inverse_get_json("BTCUSD", "D", "1653408000")
-    return "hello"
+        return "hello"
     # return render_template('home.html', ticker=ticker, json_result=json_result['result'], len=len(json_result['result']))
 
 @app.route('/dashboard', methods=['GET', 'POST'])

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bybit</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+</head>
+<body>
+{{result}}
+<div style="padding-left: 1rem;padding-right: 1rem;padding-top: 1rem;">
+    <table border="1" class="table">
+        <tr>
+            <th colspan="14">
+                BOTS
+            </th>
+        </tr>
+        <tr>
+            <td>
+                Bot name
+            </td>
+            <td>
+                Alerts in past 1hr
+            </td>
+            <td>
+                Alerts in past 24hr
+            </td>
+            <td>
+                Alerts in past 1wk
+            </td>
+            <td>
+                View Alerts
+            </td>
+            <td>
+                Net Profit $
+            </td>
+            <td>
+                Net Profit %
+            </td>
+            <td>
+                Profit Factor
+            </td>
+            <td>
+                Number of trade entries
+            </td>
+            <td>
+                % wins
+            </td>
+            <td>
+                Longest Consequtive Winners
+            </td>
+            <td>
+                Longest Consequtive Losers
+            </td>
+            <td>
+                Max DrawDown
+            </td>
+            <td>
+                Longest Consequtive Losers
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAlerts">
+                    View Alerts
+                </button>
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTransactions">
+                    View Transactions
+                </button>
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+<div style="padding-left: 1rem;padding-right: 1rem;padding-top: 1rem;">
+    <table border="1" class="table">
+        <tr>
+            <th colspan="6">
+                EXCHANGES
+            </th>
+        </tr>
+        <tr>
+            <td class="text-center">
+                Exchange name
+            </td>
+            <td class="text-center">
+                Account balance
+            </td>
+            <td class="text-center">
+                Alerts in past 1hr<br>
+                number of unique bots
+            </td>
+            <td class="text-center">
+                Alerts in past 24hr<br>
+                number of unique bots
+            </td>
+            <td class="text-center">
+                Alerts in past 1week<br>
+                number of unique bots
+            </td>
+            <td class="text-center">
+                Alerts in past 1month<br>
+                number of unique bots
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Bybit
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Kucoin
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+<div style="padding-left: 1rem;padding-right: 1rem;padding-top: 1rem;">
+    <table border="1" class="table">
+        <tr>
+            <td class="text-center">
+                CURRENT OPEN TRADES
+            </td>
+            <td class="text-center">
+                Exchange
+            </td>
+            <td class="text-center">
+               Trading pair
+            </td>
+            <td class="text-center">
+               Date trade opened
+            </td>
+            <td class="text-center">
+               % Remaining open
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                bot 1
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div style="padding-left: 1rem;padding-right: 1rem;padding-top: 1rem;">
+    <table border="1" class="table">
+        <tr>
+            <th colspan="8">
+                MOST RECENT COMPLETED TRADES
+            </th>
+        </tr>
+        <tr>
+            <td class="text-center">
+                Trades
+            </td>
+            <td class="text-center">
+                Action id
+            </td>
+            <td class="text-center">
+                Price
+            </td>
+            <td class="text-center">
+                Position Size
+            </td>
+            <td class="text-center">
+                % Closed
+            </td>
+            <td class="text-center">
+                Net Profit
+            </td>
+            <td class="text-center">
+                % Profit
+            </td>
+            <td class="text-center">
+                Reason for close
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                open(bot name/exchange/trade pair)
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+                na
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+na
+            </td>
+            <td class="text-center">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                close 1
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+            </td>
+            <td class="text-center">
+                na
+            </td>
+            <td class="text-center">
+                33%
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+                TP1
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                close 2
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+            </td>
+            <td class="text-center">
+                na
+            </td>
+            <td class="text-center">
+                33%
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+                TP2
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                close 3
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+            </td>
+            <td class="text-center">
+                na
+            </td>
+            <td class="text-center">
+                33%
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+                SL
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                all close
+            </td>
+            <td class="text-center">
+na
+            </td>
+            <td class="text-center">
+                na
+            </td>
+            <td class="text-center">
+                na
+            </td>
+            <td class="text-center">
+                100%
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="text-center">
+                na
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAlerts" tabindex="-1" role="dialog" aria-labelledby="modalAlertsTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Alerts</h5>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTransactions" tabindex="-1" role="dialog" aria-labelledby="modalTransactionsTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Transactions</h5>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

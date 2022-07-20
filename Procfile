@@ -1,0 +1,1 @@
+web: gunicorn automated_bybit:app

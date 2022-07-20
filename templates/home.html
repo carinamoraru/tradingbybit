@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bybit</title>
+</head>
+<body>
+{{data}}
+<!--{{json_result}}-->
+<!--{{len}}-->
+<!--{{json_result[0]['close']}}-->
+<!--{{json_result['ret_msg']}}-->
+<table border="1">
+    <tr>
+        <th>No</th>
+        <th>Close</th>
+        <th>Open</th>
+        <th>High</th>
+        <th>Low</th>
+    </tr>
+    {% for json in json_result %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>
+            {{ json['close'] }}
+        </td>
+        <td>
+            {{ json['open'] }}
+        </td>
+        <td>
+            {{ json['high'] }}
+        </td>
+        <td>
+            {{ json['low'] }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

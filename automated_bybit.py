@@ -52,49 +52,49 @@ def get_headers(method, endpoint):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # if request.method == 'POST':
-    #     data = json.loads(request.data)
-    #     bot_name = data['bot_name']
-    #     passphrase = data['passphrase']
-    #     tradingpairs = data['tradingpairs']
-    #     timenow = data['time']
-    #     exchange = data['exchange']
-    #     ticker = data['ticker']
-    #     timeframe = data['timeframe']
-    #     position_size = data['strategy']['position_size']
-    #     order_action = data['strategy']['order_action']
-    #     order_contracts = data['strategy']['order_contracts']
-    #     order_price = data['strategy']['order_price']
-    #     order_id = data['strategy']['order_id']
-    #     market_position = data['strategy']['market_position']
-    #     market_position_size = data['strategy']['market_position_size']
-    #     prev_market_position = data['strategy']['prev_market_position']
-    #     prev_market_position_size = data['strategy']['prev_market_position_size']
-    #     bartime = data['bar']['time']
-    #     open = data['bar']['open']
-    #     high = data['bar']['high']
-    #     low = data['bar']['low']
-    #     close = data['bar']['close']
-    #     volume = data['bar']['volume']
-    #
-    #     if passphrase == config.WEBHOOK_PASSPHRASE:
-    #
-    #         sql = """insert into `bot_log` (id, bot_name, tradingpairs, bot_time, exchange, ticker, timeframe,
-    #              bar_time, bar_open, bar_high, bar_low, bar_close, bar_volumn,
-    #              position_size, order_action, order_contracts, order_price, order_id, market_position,
-    #             market_position_size, prev_market_position, prev_market_position_size, transaction_order_id, created_at, updated_at) values (
-    #             NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-    #             %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
-    #
-    #         # running query command
-    #         conn.ping()  # reconnecting mysql
-    #         conn.cursor().execute(sql, (
-    #             bot_name, tradingpairs, timenow, exchange, ticker, timeframe,
-    #             bartime,  open, high, low, close, volume,
-    #             position_size, order_action, order_contracts, order_price, order_id, market_position,
-    #             market_position_size, prev_market_position, prev_market_position_size,
-    #             "", today, today))
-    #         conn.commit()
+    if request.method == 'POST':
+        data = json.loads(request.data)
+        bot_name = data['bot_name']
+        passphrase = data['passphrase']
+        tradingpairs = data['tradingpairs']
+        timenow = data['time']
+        exchange = data['exchange']
+        ticker = data['ticker']
+        timeframe = data['timeframe']
+        position_size = data['strategy']['position_size']
+        order_action = data['strategy']['order_action']
+        order_contracts = data['strategy']['order_contracts']
+        order_price = data['strategy']['order_price']
+        order_id = data['strategy']['order_id']
+        market_position = data['strategy']['market_position']
+        market_position_size = data['strategy']['market_position_size']
+        prev_market_position = data['strategy']['prev_market_position']
+        prev_market_position_size = data['strategy']['prev_market_position_size']
+        bartime = data['bar']['time']
+        open = data['bar']['open']
+        high = data['bar']['high']
+        low = data['bar']['low']
+        close = data['bar']['close']
+        volume = data['bar']['volume']
+
+        # if passphrase == config.WEBHOOK_PASSPHRASE:
+        #
+        #     sql = """insert into `bot_log` (id, bot_name, tradingpairs, bot_time, exchange, ticker, timeframe,
+        #          bar_time, bar_open, bar_high, bar_low, bar_close, bar_volumn,
+        #          position_size, order_action, order_contracts, order_price, order_id, market_position,
+        #         market_position_size, prev_market_position, prev_market_position_size, transaction_order_id, created_at, updated_at) values (
+        #         NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+        #         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
+        #
+        #     # running query command
+        #     conn.ping()  # reconnecting mysql
+        #     conn.cursor().execute(sql, (
+        #         bot_name, tradingpairs, timenow, exchange, ticker, timeframe,
+        #         bartime,  open, high, low, close, volume,
+        #         position_size, order_action, order_contracts, order_price, order_id, market_position,
+        #         market_position_size, prev_market_position, prev_market_position_size,
+        #         "", today, today))
+        #     conn.commit()
 
     return "ok"
 

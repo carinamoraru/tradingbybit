@@ -158,7 +158,7 @@ def dashboard():
             close_on_trigger=True
         )
     except Exception as e:
-        return e.json_body['error']
+        return str(e)
 
 # cancelling orders
 #     session_auth.cancel_active_order(

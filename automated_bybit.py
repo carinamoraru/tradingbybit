@@ -12,7 +12,7 @@ import time
 import hmac
 from pybit import usdt_perpetual
 
-live = 0
+live = 1
 api_key = config.API_KEY
 api_secret = config.API_SECURET
 api_passphrase = config.API_PASSWORD
@@ -135,27 +135,31 @@ def dashboard():
         endpoint = config.DEMO_URL
         apikey = config.DEMO_API_KEY
         securet = config.DEMO_API_SECURET
+    else:
+        endpoint = config.LIVE_URL
+        apikey = config.API_KEY
+        securet = config.API_SECURET
 
     session_auth = usdt_perpetual.HTTP(
         endpoint=endpoint,
-        api_key=apikey,
-        api_secret=securet
+        api_key="aHmDiDbpmpYI9AoBBC",
+        api_secret="3QmdzY0N9KvuHBEeosreSRFRmJgGhCzzO4ed"
     )
 
 # getting active orders
     time.sleep(5)
-    # return session_auth.get_active_order(
-    #     symbol="BTCUSDT"
-    # )
+    return session_auth.get_active_order(
+        symbol="BTCUSDT"
+    )
 
 # cancelling orders
-    try:
-        return session_auth.cancel_active_order(
-            symbol="BTCUSDT",
-            order_id="30723bc5-b3d4-41f7-bad6-f9b767d4e78c"
-        )
-    except:
-        return "Error on Cancel order"
+#     try:
+#         return session_auth.cancel_active_order(
+#             symbol="BTCUSDT",
+#             order_id="30723bc5-b3d4-41f7-bad6-f9b767d4e78c"
+#         )
+#     except:
+#         return "Error on Cancel order"
 
 
 

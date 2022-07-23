@@ -12,7 +12,7 @@ import time
 import hmac
 from pybit import usdt_perpetual
 
-live = 1
+live = 0
 api_key = config.API_KEY
 api_secret = config.API_SECURET
 api_passphrase = config.API_PASSWORD
@@ -142,8 +142,8 @@ def dashboard():
 
     session_auth = usdt_perpetual.HTTP(
         endpoint=endpoint,
-        api_key="aHmDiDbpmpYI9AoBBC",
-        api_secret="3QmdzY0N9KvuHBEeosreSRFRmJgGhCzzO4ed"
+        api_key=apikey,
+        api_secret=securet
     )
 
 # getting active orders

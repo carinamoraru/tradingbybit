@@ -151,7 +151,7 @@ def dashboard():
         side="Buy",
         order_type="Limit",
         qty=1,
-        price=20000,
+        price=24000,
         time_in_force="GoodTillCancel",
         reduce_only=True,
         close_on_trigger=True

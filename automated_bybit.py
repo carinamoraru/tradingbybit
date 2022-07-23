@@ -152,15 +152,15 @@ def dashboard():
 
 # getting active orders
     time.sleep(5)
-    return session_auth.get_active_order(
-        symbol="BTCUSDT"
-    )
+    # return session_auth.get_active_order(
+    #     symbol="BTCUSDT"
+    # )
 
 # cancelling orders
-#     return session_auth.cancel_active_order(
-#         symbol="BTCUSDT",
-#         order_id="30723bc5-b3d4-41f7-bad6-f9b767d4e78c"
-#     )
+    return session_auth.cancel_active_order(
+        symbol="BTCUSDT",
+        order_id="30723bc5-b3d4-41f7-bad6-f9b767d4e78c"
+    )
 
 if __name__ == "__main__":
     # application.debug = True

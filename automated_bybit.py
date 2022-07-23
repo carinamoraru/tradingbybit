@@ -146,16 +146,19 @@ def dashboard():
         api_secret=securet
     )
 # set up new order
-    json_data = session_auth.place_active_order(
-        symbol='BTCUSDT',
-        side="Buy",
-        order_type="Limit",
-        qty=1,
-        price=24000,
-        time_in_force="GoodTillCancel",
-        reduce_only=True,
-        close_on_trigger=True
-    )
+    try:
+        json_data = session_auth.place_active_order(
+            symbol='BTCUSDT',
+            side="Buy",
+            order_type="Limit",
+            qty=1,
+            price=24000,
+            time_in_force="GoodTillCancel",
+            reduce_only=True,
+            close_on_trigger=True
+        )
+    except Exception as e:
+        return e
 
 # cancelling orders
 #     session_auth.cancel_active_order(

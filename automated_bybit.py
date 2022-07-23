@@ -100,7 +100,7 @@ def index():
                         qty=1,
                         price=close,
                         time_in_force="GoodTillCancel",
-                        reduce_only=False,
+                        reduce_only=True,
                         close_on_trigger=False
                     )
                     transaction_order_id = json_data.json()['result'][1]['order_id']
@@ -145,12 +145,23 @@ def dashboard():
         api_key=apikey,
         api_secret=securet
     )
+# set up new order
+    json_data = session_auth.place_active_order(
+        symbol='BTCUSDT',
+        side="Buy",
+        order_type="Limit",
+        qty=1,
+        price=1200,
+        time_in_force="GoodTillCancel",
+        reduce_only=True,
+        close_on_trigger=False
+    )
 
 # cancelling orders
-    session_auth.cancel_active_order(
-        symbol="BTCUSDT",
-        order_id="67027ad0-d13e-49e1-9162-44d72bbe4844"
-    )
+#     session_auth.cancel_active_order(
+#         symbol="BTCUSDT",
+#         order_id="67027ad0-d13e-49e1-9162-44d72bbe4844"
+#     )
 
 # getting active orders
     time.sleep(5)

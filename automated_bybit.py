@@ -101,7 +101,7 @@ def index():
                         price=close,
                         time_in_force="GoodTillCancel",
                         reduce_only=True,
-                        close_on_trigger=False
+                        close_on_trigger=True
                     )
                     transaction_order_id = json_data.json()['result'][1]['order_id']
                     break
@@ -154,7 +154,7 @@ def dashboard():
         price=20000,
         time_in_force="GoodTillCancel",
         reduce_only=True,
-        close_on_trigger=False
+        close_on_trigger=True
     )
 
 # cancelling orders
@@ -164,7 +164,7 @@ def dashboard():
 #     )
 
 # getting active orders
-    time.sleep(5)
+#     time.sleep(300)
     return session_auth.get_active_order(
         symbol="BTCUSDT"
     )

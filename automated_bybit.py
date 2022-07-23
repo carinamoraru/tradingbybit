@@ -1,17 +1,16 @@
 from flask import Flask, render_template, request
 application = Flask(__name__)
 app = application
-import my_bybit
 import config
 import pymysql
 import datetime
 import json
-import logging
 import hashlib
 import base64
 import requests
 import time
 import hmac
+from pybit import usdt_perpetual
 
 live = 0
 api_key = config.API_KEY
@@ -78,6 +77,39 @@ def index():
         volume = data['bar']['volume']
 
         if passphrase == config.WEBHOOK_PASSPHRASE:
+            if live == 0:
+                endpoint = config.DEMO_URL
+                apikey = config.DEMO_API_KEY
+                securet = config.DEMO_API_SECURET
+
+            session_auth = usdt_perpetual.HTTP(
+                endpoint=endpoint,
+                api_key=apikey,
+                api_secret=securet
+            )
+
+            page = ''
+            transaction_order_id = ''
+            while page == '':
+                try:
+                    # set up new order
+                    json_data = session_auth.place_active_order(
+                        symbol=tradingpairs,
+                        side="Buy",
+                        order_type="Limit",
+                        qty=1,
+                        price=close,
+                        time_in_force="GoodTillCancel",
+                        reduce_only=False,
+                        close_on_trigger=False
+                    )
+                    transaction_order_id = json_data.json()['result'][1]['order_id']
+                    break
+                except:
+                    print("retries exceeded maximum")
+                    time.sleep(5)
+                    continue
+
 
             sql = """insert into `bot_log` (id, bot_name, tradingpairs, bot_time, exchange, ticker, timeframe,
                  bar_time, bar_open, bar_high, bar_low, bar_close, bar_volumn,
@@ -93,29 +125,42 @@ def index():
                 bartime,  open, high, low, close, volume,
                 position_size, order_action, order_contracts, order_price, order_id, market_position,
                 market_position_size, prev_market_position, prev_market_position_size,
-                "", today, today))
+                transaction_order_id, today, today))
             conn.commit()
-
     return "ok"
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    # running query command
-    # conn.ping()  # reconnecting mysql
-    # sql = "SELECT * FROM bot_log ORDER BY id asc"
-    # with conn:
-    #     with conn.cursor() as cur:
-    #         cur.execute(sql)
-    #         result = cur.fetchall()
-            # for data in result:
-            #     first_name = data[1]
+    if live == 0:
+        endpoint = config.DEMO_URL
+        apikey = config.DEMO_API_KEY
+        securet = config.DEMO_API_SECURET
 
-    myBybit = my_bybit.Mybybit(live)
-    json_result = myBybit.usdt_perpetual_get_json("BTCUSDT")
+    page = ''
+    while page == '':
+        try:
+            session_auth = usdt_perpetual.HTTP(
+                endpoint=endpoint,
+                api_key=apikey,
+                api_secret=securet
+            )
+            break
+        except:
+            return "retries exceeded maximum"
+            time.sleep(5)
+            continue
 
-    # conn.commit()
-    return render_template('dashboard.html', result=json_result)
+# getting active orders
+    time.sleep(5)
+    return session_auth.get_active_order(
+        symbol="BTCUSDT"
+    )
 
+# cancelling orders
+#     return session_auth.cancel_active_order(
+#         symbol="BTCUSDT",
+#         order_id="30723bc5-b3d4-41f7-bad6-f9b767d4e78c"
+#     )
 
 if __name__ == "__main__":
     # application.debug = True

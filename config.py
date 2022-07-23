@@ -5,6 +5,6 @@ API_SECURET = "QaTm9Y9DAz5aCGe3T4chjCBvV9zpN73GMbyv"
 API_PASSWORD = "greentrees1111"
 # ///bybit-testnet-golden
 DEMO_URL = "https://api-testnet.bybit.com"
-DEMO_API_KEY = "qneQGZVH9uJvg5dmal"
-DEMO_API_SECURET = "4xHX57pEKSUWLt1ET4dqxIu81DGmjBWTgEGD"
+DEMO_API_KEY = "8UOptNa4ym012V67Zj"
+DEMO_API_SECURET = "qdB1mvfLjP5KnMNuHZmfq0HKr5WEHM3KdQKv"
 DEMO_API_PASSWORD = "greentrees1111"

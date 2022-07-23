@@ -136,31 +136,28 @@ def dashboard():
         apikey = config.DEMO_API_KEY
         securet = config.DEMO_API_SECURET
 
-    page = ''
-    while page == '':
-        try:
-            session_auth = usdt_perpetual.HTTP(
-                endpoint=endpoint,
-                api_key=apikey,
-                api_secret=securet
-            )
-            break
-        except:
-            return "retries exceeded maximum"
-            time.sleep(5)
-            continue
+    session_auth = usdt_perpetual.HTTP(
+        endpoint=endpoint,
+        api_key=apikey,
+        api_secret=securet
+    )
 
 # getting active orders
     time.sleep(5)
-    # return session_auth.get_active_order(
-    #     symbol="BTCUSDT"
-    # )
+    return session_auth.get_active_order(
+        symbol="BTCUSDT"
+    )
 
 # cancelling orders
-    return session_auth.cancel_active_order(
-        symbol="BTCUSDT",
-        order_id="30723bc5-b3d4-41f7-bad6-f9b767d4e78c"
-    )
+#     try:
+#         return session_auth.cancel_active_order(
+#             symbol="BTCUSDT",
+#             order_id="30723bc5-b3d4-41f7-bad6-f9b767d4e78c"
+#         )
+#     except:
+#         return "Error on Cancel order"
+
+
 
 if __name__ == "__main__":
     # application.debug = True

@@ -146,20 +146,17 @@ def dashboard():
         api_secret=securet
     )
 
+# cancelling orders
+    session_auth.cancel_active_order(
+        symbol="BTCUSDT",
+        order_id="67027ad0-d13e-49e1-9162-44d72bbe4844"
+    )
+
 # getting active orders
     time.sleep(5)
-    # return session_auth.get_active_order(
-    #     symbol="BTCUSDT"
-    # )
-
-# cancelling orders
-    try:
-        return session_auth.cancel_active_order(
-            symbol="BTCUSDT",
-            order_id="67027ad0-d13e-49e1-9162-44d72bbe4844"
-        )
-    except:
-        return "Error on Cancel order"
+    return session_auth.get_active_order(
+        symbol="BTCUSDT"
+    )
 
 
 

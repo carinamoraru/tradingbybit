@@ -13,10 +13,17 @@ import hmac
 from pybit import usdt_perpetual
 
 live = 0
-api_key = config.API_KEY
-api_secret = config.API_SECURET
-api_passphrase = config.API_PASSWORD
-base_uri = config.DEMO_URL
+if live == 0:
+    base_uri = config.DEMO_URL
+    apikey = config.DEMO_API_KEY
+    securet = config.DEMO_API_SECURET
+    api_password = config.API_PASSWORD
+else:
+    base_uri = config.LIVE_URL
+    apikey = config.API_KEY
+    securet = config.API_SECURET
+    api_password = config.DEMO_API_PASSWORD
+
 mysql_host = "us-cdbr-east-06.cleardb.net"
 mysql_dbname = "heroku_39cbab9600555e9"
 mysql_username = "be77cdf07badde"
@@ -35,18 +42,19 @@ conn = pymysql.connect(host=mysql_host,
                        charset='utf8')
 cur = conn.cursor()
 
-def get_headers(method, endpoint):
+def get_headers(method, endpoint, data_json):
     now = int(time.time() * 1000)
-    str_to_sign = str(now) + method + endpoint
-    signature = base64.b64encode(
-        hmac.new(api_secret.encode(), str_to_sign.encode(), hashlib.sha256).digest()).decode()
-    passphrase = base64.b64encode(
-        hmac.new(api_secret.encode(), api_passphrase.encode(), hashlib.sha256).digest()).decode()
-    return {'KC-API-KEY': api_key,
-            'KC-API-KEY-VERSION': '2',
-            'KC-API-PASSPHRASE': passphrase,
-            'KC-API-SIGN': signature,
-            'KC-API-TIMESTAMP': str(now)
+    recv_window = 5000
+    str_to_sign = str(now) + apikey + str(recv_window) + str(data_json)
+    secret_key = securet.encode('utf-8')
+    total_params = str_to_sign.encode('utf-8')
+    signature = hmac.new(secret_key, total_params, hashlib.sha256).hexdigest()
+    return {"X-BAPI-SIGN": signature,
+            "X-BAPI-TIMESTAMP": str(now),
+            "X-BAPI-API-KEY": apikey,
+            "X-BAPI-RECV-WINDOW": "5000",
+            "X-BAPI-SIGN-TYPE": "2",
+            "Content-Type": "application/json"  # specifying content type or using json=data in request
             }
 
 @app.route('/', methods=['GET', 'POST'])
@@ -131,46 +139,27 @@ def index():
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    if live == 0:
-        endpoint = config.DEMO_URL
-        apikey = config.DEMO_API_KEY
-        securet = config.DEMO_API_SECURET
-    else:
-        endpoint = config.LIVE_URL
-        apikey = config.API_KEY
-        securet = config.API_SECURET
+    # Getting wallet balance
+    method = 'GET'
+    endpoint = '/unified/v3/private/account/wallet/balance'
+    walletBalance = requests.request(method, base_uri + endpoint, headers=get_headers(method, endpoint, ""),
+                                     data="")
+    # Set up place order
+    #     method = 'POST'
+    #     endpoint = '/unified/v3/private/order/create'
+    #     data = {"category": "linear", "symbol": "BTCUSDT", "orderType": "Limit", "side": "Buy", "price": 20000, "size": 1}
+    #     data_json = json.dumps(data)
+    #     orderPlacement = requests.request(method, base_uri + endpoint, headers=get_headers(method, endpoint, data_json), data=data_json)
 
-    session_auth = usdt_perpetual.HTTP(
-        endpoint=endpoint,
-        api_key=apikey,
-        api_secret=securet
-    )
-# set up new order
-#     try:
-#         json_data = session_auth.place_active_order(
-#             symbol='BTCUSDT',
-#             side="Buy",
-#             order_type="Limit",
-#             qty=1,
-#             price=24000,
-#             time_in_force="GoodTillCancel",
-#             reduce_only=True,
-#             close_on_trigger=True
-#         )
-#     except Exception as e:
-#         return str(e)
+    # Browser orders
+    method = 'GET'
+    endpoint = '/unified/v3/private/order/list'
+    data = "?category=linear&symbol=BTCUSDT&limit=10"
+    queryString = "category=linear&symbol=BTCUSDT&limit=10"
+    browserOrder = requests.request(method, base_uri + endpoint + data,
+                                    headers=get_headers(method, endpoint + data, queryString), data='')
 
-# cancelling orders
-#     session_auth.cancel_active_order(
-#         symbol="BTCUSDT",
-#         order_id="67027ad0-d13e-49e1-9162-44d72bbe4844"
-#     )
-
-# getting active orders
-#     time.sleep(300)
-    return session_auth.get_active_order(
-        symbol="BTCUSDT"
-    )
+    return browserOrder.json()
 
 
 

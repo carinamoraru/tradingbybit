@@ -413,7 +413,7 @@ def test():
         logging.error('%s action', request.data)
         data = json.loads(request.data)
         # data = request.data
-        logging.error('%s action', data['message'])
+        logging.error('%s action', data['action'])
         # action = data['action']
         # qty = data['qty']
 

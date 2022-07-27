@@ -412,7 +412,7 @@ def test():
         data = json.loads(request.data)
         code = data['code']
         qty = data['qty']
-    return code, qty
+    return [code, qty]
 
 
 if __name__ == "__main__":

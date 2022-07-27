@@ -414,7 +414,6 @@ def test():
         data = request.data
         str1 = data.replace(b"message (", b"")
         str2 = str1.replace(b").", b"")
-        logging.error('%s str2', str2)
         data1 = json.loads(str2)
         action = data1['action']
         logging.error('%s action', action)

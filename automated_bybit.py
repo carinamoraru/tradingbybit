@@ -406,6 +406,15 @@ def dashboard():
 
     return listOrders
 
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    if request.method == 'POST':
+        data = json.loads(request.data)
+        code = data['code']
+        qty = data['qty']
+    return code, qty
+
+
 if __name__ == "__main__":
     # application.debug = True
     application.run(threaded=True)

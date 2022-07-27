@@ -412,7 +412,7 @@ def test():
     if request.method == 'POST':
         logging.error('%s action', request.data)
         data = request.data
-        str3 = data.replace("message (", "")
+        str3 = data.replace(b"message (", b"")
         logging.error('%s str3', str3)
         # data = json.loads(request.data)
         # data = request.data

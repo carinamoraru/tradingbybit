@@ -10,6 +10,7 @@ import base64
 import requests
 import time
 import hmac
+import logging
 from pybit import usdt_perpetual
 
 live = 0
@@ -408,12 +409,13 @@ def dashboard():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    return "ok"
-    # if request.method == 'POST':
-    #     data = json.loads(request.data)
-    #     action = data['action']
-    #     qty = data['qty']
-    # return [action, qty]
+    if request.method == 'POST':
+        data = json.loads(request.data)
+        action = data['action']
+        qty = data['qty']
+        logging.error('%s action', action)
+        logging.error('%s qty', qty)
+    return [action, qty]
 
 
 if __name__ == "__main__":

@@ -408,11 +408,12 @@ def dashboard():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    if request.method == 'POST':
-        data = json.loads(request.data)
-        action = data['action']
-        qty = data['qty']
-    return [action, qty]
+    return "ok"
+    # if request.method == 'POST':
+    #     data = json.loads(request.data)
+    #     action = data['action']
+    #     qty = data['qty']
+    # return [action, qty]
 
 
 if __name__ == "__main__":

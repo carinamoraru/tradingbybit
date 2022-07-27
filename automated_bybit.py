@@ -410,16 +410,14 @@ def dashboard():
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     if request.method == 'POST':
-        logging.error('%s action', request.data)
+        logging.error('entire data %s', request.data)
         data = request.data
         str1 = data.replace(b"message (", b"")
         str2 = str1.replace(b").", b"")
         logging.error('%s str2', str2)
-        # data = json.loads(request.data)
-        # data = request.data
-
-        # action = data['action']
-        # qty = data['qty']
+        data1 = json.loads(str2)
+        action = data1['action']
+        logging.error('%s action', action)
 
     return "ok"
 

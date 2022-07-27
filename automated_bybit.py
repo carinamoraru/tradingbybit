@@ -410,9 +410,9 @@ def dashboard():
 def test():
     if request.method == 'POST':
         data = json.loads(request.data)
-        code = data['code']
+        action = data['action']
         qty = data['qty']
-    return [code, qty]
+    return [action, qty]
 
 
 if __name__ == "__main__":

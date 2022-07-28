@@ -85,7 +85,7 @@ def index():
             index_price = latestInfo['result'][0]['index_price']
             logging.error('index_price %s', index_price)
 
-            qty = float(totalAvailableBalance) * 0.01 / float(indexPriceList[0])
+            qty = float(totalAvailableBalance) * 0.01 / float(index_price)
             qty = round(qty, 4)
             qty = str(qty)
             logging.error('qty %s', qty)

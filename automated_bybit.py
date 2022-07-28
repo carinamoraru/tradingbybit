@@ -72,11 +72,15 @@ def index():
 
             # Getting wallet balance
             wallet = session_auth.get_wallet_balance()
-            logging.error('Balance %s', wallet)
+            logging.error('Wallet %s', wallet)
             totalWalletBalance = wallet['result']['USDT']['wallet_balance']
             totalAvailableBalance = wallet['result']['USDT']['available_balance']
             logging.error('Total Wallet Balance %s', totalWalletBalance)
             logging.error('Total Available Balance %s', totalAvailableBalance)
+
+            # Getting final order price
+            latestInfo = session_auth.latest_information_for_symbol()
+            logging.error('LatestInfo %s', latestInfo)
 
             # set up new order
             # newOrder = session_auth.place_active_order(

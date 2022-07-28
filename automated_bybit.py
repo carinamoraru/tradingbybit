@@ -92,7 +92,7 @@ def index():
 
             # Set up place order
             if ticker.upper() == "BTCUSD":
-                symbol = ticker
+                symbol = ticker + "T"
             else:
                 symbol = ticker
             if side.lower() == "buy":
@@ -106,6 +106,8 @@ def index():
                 side=side,
                 order_type="Market",
                 qty=qty,
+                reduce_only=False,
+                close_on_trigger=False,
                 time_in_force="GoodTillCancel",
             )
             logging.error('new order %s', newOrder)
@@ -205,6 +207,21 @@ def dashboard():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
+    session_auth = usdt_perpetual.HTTP(
+        endpoint=endpoint,
+        api_key=apikey,
+        api_secret=securet
+    )
+    newOrder = session_auth.place_active_order(
+        symbol="BTCUSDT",
+        side="Buy",
+        order_type="Market",
+        qty=0.1,
+        reduce_only=False,
+        close_on_trigger=False,
+        time_in_force="GoodTillCancel",
+    )
+    logging.error('new order %s', newOrder)
     if request.method == 'POST':
         logging.error('entire data %s', request.data)
         data = request.data

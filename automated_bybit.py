@@ -92,7 +92,7 @@ def index():
 
             # Set up place order
             if ticker.upper() == "BTCUSD":
-                symbol = ticker + "T"
+                symbol = ticker
             else:
                 symbol = ticker
             if side.lower() == "buy":
@@ -123,7 +123,7 @@ def index():
                 qty, side, order_price, order_id,
                 transaction_order_id, today, today))
             conn.commit()
-            time.sleep(30)
+            time.sleep(10)
             # except:
             #     logging.error('Error while make order!!!')
     else:

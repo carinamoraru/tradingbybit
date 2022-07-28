@@ -73,8 +73,8 @@ def index():
             # Getting wallet balance
             wallet = session_auth.get_wallet_balance()
             logging.error('Balance %s', wallet)
-            totalWalletBalance = wallet['result']['wallet_balance']
-            totalAvailableBalance = wallet['result']['available_balance']
+            totalWalletBalance = wallet['result']['USDT']['wallet_balance']
+            totalAvailableBalance = wallet['result']['USDT']['available_balance']
             logging.error('Total Wallet Balance %s', totalWalletBalance)
             logging.error('Total Available Balance %s', totalAvailableBalance)
 

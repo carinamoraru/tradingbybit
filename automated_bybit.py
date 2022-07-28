@@ -90,15 +90,27 @@ def index():
             qty = str(qty)
             logging.error('qty %s', qty)
 
-            # set up new order
-            # newOrder = session_auth.place_active_order(
-            #     symbol=ticker,
-            #     side=side,
-            #     order_type="Market",
-            #     qty=qty,
-            #     time_in_force="GoodTillCancel",
-            # )
-            # transaction_order_id = newOrder.json()['result']['order_id']
+            # Set up place order
+            if ticker.upper() == "BTCUSD":
+                symbol = ticker + "T"
+            else:
+                symbol = ticker
+            if side.lower() == "buy":
+                side = "Buy"
+            else:
+                side = "Sell"
+
+            # creating new order
+            newOrder = session_auth.place_active_order(
+                symbol=ticker,
+                side=side,
+                order_type="Market",
+                qty=qty,
+                time_in_force="GoodTillCancel",
+            )
+            logging.error('new order %s', newOrder)
+            transaction_order_id = newOrder['result']['order_id']
+
             sql = """insert into `bot_log` (id, bot_name, bot_time, exchange, ticker, timeframe,
                                              qty, side, order_price, order_id, transaction_order_id, created_at, updated_at) values (
                                             NULL, %s, %s, %s, %s, %s, 

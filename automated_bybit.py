@@ -82,7 +82,7 @@ def index():
             # Only BTCUSD symbol(others are BTCUSDM21, CROUSDT, QTUMUSDT, LRCUSDT)
             latestInfo = session_auth.latest_information_for_symbol(symbol="BTCUSD")
             logging.error('LatestInfo %s', latestInfo)
-            index_price = latestInfo['result']['index_price']
+            index_price = latestInfo['result'][0]['index_price']
             logging.error('index_price %s', index_price)
 
             # set up new order

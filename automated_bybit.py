@@ -123,6 +123,7 @@ def index():
                 qty, side, order_price, order_id,
                 transaction_order_id, today, today))
             conn.commit()
+            time.sleep(30)
             # except:
             #     logging.error('Error while make order!!!')
     else:

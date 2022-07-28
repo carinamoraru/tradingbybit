@@ -85,6 +85,11 @@ def index():
             index_price = latestInfo['result'][0]['index_price']
             logging.error('index_price %s', index_price)
 
+            qty = float(totalAvailableBalance) * 0.01 / float(indexPriceList[0])
+            qty = round(qty, 4)
+            qty = str(qty)
+            logging.error('qty %s', qty)
+
             # set up new order
             # newOrder = session_auth.place_active_order(
             #     symbol=ticker,

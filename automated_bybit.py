@@ -63,44 +63,44 @@ def index():
         transaction_order_id = ''
 
         if passphrase == config.WEBHOOK_PASSPHRASE:
-            try:
-                session_auth = usdt_perpetual.HTTP(
-                    endpoint=endpoint,
-                    api_key=apikey,
-                    api_secret=securet
-                )
+            # try:
+            session_auth = usdt_perpetual.HTTP(
+                endpoint=endpoint,
+                api_key=apikey,
+                api_secret=securet
+            )
 
-                # Getting wallet balance
-                wallet = session_auth.get_wallet_balance()
-                logging.error('Balance %s', wallet.json())
-                totalWalletBalance = wallet.json()['result']['wallet_balance']
-                totalAvailableBalance = wallet.json()['result']['available_balance']
-                logging.error('Total Wallet Balance %s', totalWalletBalance)
-                logging.error('Total Available Balance %s', totalAvailableBalance)
+            # Getting wallet balance
+            wallet = session_auth.get_wallet_balance()
+            logging.error('Balance %s', wallet.json())
+            totalWalletBalance = wallet.json()['result']['wallet_balance']
+            totalAvailableBalance = wallet.json()['result']['available_balance']
+            logging.error('Total Wallet Balance %s', totalWalletBalance)
+            logging.error('Total Available Balance %s', totalAvailableBalance)
 
-                # set up new order
-                # newOrder = session_auth.place_active_order(
-                #     symbol=ticker,
-                #     side=side,
-                #     order_type="Market",
-                #     qty=qty,
-                #     time_in_force="GoodTillCancel",
-                # )
-                # transaction_order_id = newOrder.json()['result']['order_id']
-                sql = """insert into `bot_log` (id, bot_name, bot_time, exchange, ticker, timeframe,
-                                                 qty, side, order_price, order_id, transaction_order_id, created_at, updated_at) values (
-                                                NULL, %s, %s, %s, %s, %s, 
-                                                %s, %s, %s, %s, %s, %s, %s) """
+            # set up new order
+            # newOrder = session_auth.place_active_order(
+            #     symbol=ticker,
+            #     side=side,
+            #     order_type="Market",
+            #     qty=qty,
+            #     time_in_force="GoodTillCancel",
+            # )
+            # transaction_order_id = newOrder.json()['result']['order_id']
+            sql = """insert into `bot_log` (id, bot_name, bot_time, exchange, ticker, timeframe,
+                                             qty, side, order_price, order_id, transaction_order_id, created_at, updated_at) values (
+                                            NULL, %s, %s, %s, %s, %s, 
+                                            %s, %s, %s, %s, %s, %s, %s) """
 
-                # running query command
-                conn.ping()  # reconnecting mysql
-                conn.cursor().execute(sql, (
-                    bot_name, timenow, exchange, ticker, timeframe,
-                    qty, side, order_price, order_id,
-                    transaction_order_id, today, today))
-                conn.commit()
-            except:
-                logging.error('Error while make order!!!')
+            # running query command
+            conn.ping()  # reconnecting mysql
+            conn.cursor().execute(sql, (
+                bot_name, timenow, exchange, ticker, timeframe,
+                qty, side, order_price, order_id,
+                transaction_order_id, today, today))
+            conn.commit()
+            # except:
+            #     logging.error('Error while make order!!!')
     else:
         resultStr = "no post"
     return resultStr
@@ -109,7 +109,7 @@ def index():
 def dashboard():
     symbol = "BTCUSDT"
     session_auth = usdt_perpetual.HTTP(
-        endpoint=base_uri,
+        endpoint=endpoint,
         api_key=apikey,
         api_secret=securet
     )

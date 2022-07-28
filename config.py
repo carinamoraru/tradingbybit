@@ -1,4 +1,4 @@
-WEBHOOK_PASSPHRASE = "password"
+WEBHOOK_PASSPHRASE = "Janaka123!"
 LIVE_URL = "https://api.bybit.com"
 API_KEY = "cSBL3DAXa2S2Hhv5MO"
 API_SECURET = "QaTm9Y9DAz5aCGe3T4chjCBvV9zpN73GMbyv"

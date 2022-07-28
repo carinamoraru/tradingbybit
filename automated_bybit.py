@@ -65,26 +65,14 @@ def index():
         data = json.loads(request.data)
         bot_name = data['bot_name']
         passphrase = data['passphrase']
-        tradingpairs = data['tradingpairs']
-        timenow = data['time']
+        timenow = data['bot_time']
         exchange = data['exchange']
         ticker = data['ticker']
         timeframe = data['timeframe']
-        position_size = data['strategy']['position_size']
-        order_action = data['strategy']['order_action']
-        order_contracts = data['strategy']['order_contracts']
-        order_price = data['strategy']['order_price']
-        order_id = data['strategy']['order_id']
-        market_position = data['strategy']['market_position']
-        market_position_size = data['strategy']['market_position_size']
-        prev_market_position = data['strategy']['prev_market_position']
-        prev_market_position_size = data['strategy']['prev_market_position_size']
-        bartime = data['bar']['time']
-        open = data['bar']['open']
-        high = data['bar']['high']
-        low = data['bar']['low']
-        close = data['bar']['close']
-        volume = data['bar']['volume']
+        qty = data['qty']
+        side = data['side']
+        order_price = data['order_price']
+        order_id = data['order_id']
 
         if passphrase == config.WEBHOOK_PASSPHRASE:
             if live == 0:
@@ -133,14 +121,11 @@ def index():
                 )
                 # set up new order
                 newOrder = session_auth.place_active_order(
-                    symbol=tradingpairs,
-                    side="Buy",
-                    order_type="Limit",
+                    symbol=ticker,
+                    side=side,
+                    order_type="Market",
                     qty=0.1,
-                    price=close * 10,
                     time_in_force="GoodTillCancel",
-                    reduce_only=False,
-                    close_on_trigger=False
                 )
                 transaction_order_id = newOrder['result'][0]['order_id']
                 sql = """insert into `bot_log` (id, bot_name, tradingpairs, bot_time, exchange, ticker, timeframe,
@@ -164,152 +149,11 @@ def index():
             if old_buyorder_id == 0 and old_sellorder_id == 0:
                 # set up new order
                 newOrder = session_auth.place_active_order(
-                    symbol=tradingpairs,
-                    side="Buy",
-                    order_type="Limit",
+                    symbol=ticker,
+                    side=side,
+                    order_type="Market",
                     qty=0.1,
-                    price=close * 10,
                     time_in_force="GoodTillCancel",
-                    reduce_only=False,
-                    close_on_trigger=False
-                )
-                transaction_order_id = newOrder['result'][0]['order_id']
-                sql = """insert into `bot_log` (id, bot_name, tradingpairs, bot_time, exchange, ticker, timeframe,
-                                 bar_time, bar_open, bar_high, bar_low, bar_close, bar_volumn,
-                                 position_size, order_action, order_contracts, order_price, order_id, market_position,
-                                market_position_size, prev_market_position, prev_market_position_size, transaction_order_id, created_at, updated_at) values (
-                                NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
-
-                # running query command
-                conn.ping()  # reconnecting mysql
-                conn.cursor().execute(sql, (
-                    bot_name, tradingpairs, timenow, exchange, ticker, timeframe,
-                    bartime, open, high, low, close, volume,
-                    position_size, order_action, order_contracts, order_price, order_id, market_position,
-                    market_position_size, prev_market_position, prev_market_position_size,
-                    transaction_order_id, today, today))
-                conn.commit()
-                return "changed"
-            # duplicate buy price
-            if old_diff_buyorder_id != 0 and old_sellorder_id != 0:
-                return "no change"
-            return "ok"
-
-# when going short, will become sell
-@app.route('/short', methods=['GET', 'POST'])
-def short():
-    if request.method == 'POST':
-        data = json.loads(request.data)
-        bot_name = data['bot_name']
-        passphrase = data['passphrase']
-        tradingpairs = data['tradingpairs']
-        timenow = data['time']
-        exchange = data['exchange']
-        ticker = data['ticker']
-        timeframe = data['timeframe']
-        position_size = data['strategy']['position_size']
-        order_action = data['strategy']['order_action']
-        order_contracts = data['strategy']['order_contracts']
-        order_price = data['strategy']['order_price']
-        order_id = data['strategy']['order_id']
-        market_position = data['strategy']['market_position']
-        market_position_size = data['strategy']['market_position_size']
-        prev_market_position = data['strategy']['prev_market_position']
-        prev_market_position_size = data['strategy']['prev_market_position_size']
-        bartime = data['bar']['time']
-        open = data['bar']['open']
-        high = data['bar']['high']
-        low = data['bar']['low']
-        close = data['bar']['close']
-        volume = data['bar']['volume']
-
-        if passphrase == config.WEBHOOK_PASSPHRASE:
-            if live == 0:
-                endpoint = config.DEMO_URL
-                apikey = config.DEMO_API_KEY
-                securet = config.DEMO_API_SECURET
-
-            session_auth = usdt_perpetual.HTTP(
-                endpoint=endpoint,
-                api_key=apikey,
-                api_secret=securet
-            )
-
-            transaction_order_id = ''
-            # checking condition for price
-            conn.ping()  # reconnecting mysql
-            cur.execute(
-                "SELECT * FROM order_log WHERE side = 'Sell' AND status = '1' AND price <> 'close*10' ORDER BY id DESC LIMIT 1")
-            old_buyorder_id = cur.rowcount
-            result = cur.fetchall()
-            for data in result:
-                old_order_id = data[1]
-            conn.commit()
-
-            # checking different price condition
-            conn.ping()  # reconnecting mysql
-            cur.execute(
-                "SELECT * FROM order_log WHERE side = 'Sell' AND status = '1' AND price == 'close*10' ORDER BY id DESC LIMIT 1")
-            old_diff_buyorder_id = cur.rowcount
-            conn.commit()
-
-            # checking sell condition
-            conn.ping()  # reconnecting mysql
-            cur.execute(
-                "SELECT * FROM order_log WHERE side = 'Buy' AND status = '1' AND price = 'close*10' ORDER BY id DESC LIMIT 1")
-            old_sellorder_id = cur.rowcount
-            result = cur.fetchall()
-            conn.commit()
-
-            # duplicate buy price
-            if old_buyorder_id != 0 and old_sellorder_id == 0:
-                # cancel old order
-                oldOrder = session_auth.cancel_active_order(
-                    symbol="BTCUSDT",
-                    order_id=old_buyorder_id
-                )
-                # set up new order
-                newOrder = session_auth.place_active_order(
-                    symbol=tradingpairs,
-                    side="Sell",
-                    order_type="Limit",
-                    qty=0.1,
-                    price=close * 10,
-                    time_in_force="GoodTillCancel",
-                    reduce_only=False,
-                    close_on_trigger=False
-                )
-                transaction_order_id = newOrder['result'][0]['order_id']
-                sql = """insert into `bot_log` (id, bot_name, tradingpairs, bot_time, exchange, ticker, timeframe,
-                                 bar_time, bar_open, bar_high, bar_low, bar_close, bar_volumn,
-                                 position_size, order_action, order_contracts, order_price, order_id, market_position,
-                                market_position_size, prev_market_position, prev_market_position_size, transaction_order_id, created_at, updated_at) values (
-                                NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
-
-                # running query command
-                conn.ping()  # reconnecting mysql
-                conn.cursor().execute(sql, (
-                    bot_name, tradingpairs, timenow, exchange, ticker, timeframe,
-                    bartime, open, high, low, close, volume,
-                    position_size, order_action, order_contracts, order_price, order_id, market_position,
-                    market_position_size, prev_market_position, prev_market_position_size,
-                    transaction_order_id, today, today))
-                conn.commit()
-                return "changed"
-            # not duplicate buy price
-            if old_buyorder_id == 0 and old_sellorder_id == 0:
-                # set up new order
-                newOrder = session_auth.place_active_order(
-                    symbol=tradingpairs,
-                    side="Sell",
-                    order_type="Limit",
-                    qty=0.1,
-                    price=close * 10,
-                    time_in_force="GoodTillCancel",
-                    reduce_only=False,
-                    close_on_trigger=False
                 )
                 transaction_order_id = newOrder['result'][0]['order_id']
                 sql = """insert into `bot_log` (id, bot_name, tradingpairs, bot_time, exchange, ticker, timeframe,
@@ -415,11 +259,10 @@ def test():
         str1 = data.replace(b"message (", b"")
         str2 = str1.replace(b").", b"")
         data1 = json.loads(str2)
-        action = data1['action']
-        logging.error('%s action', action)
+        action = data1['order_id']
+        logging.error('%s order_id', action)
 
     return "ok"
-
 
 if __name__ == "__main__":
     # application.debug = True

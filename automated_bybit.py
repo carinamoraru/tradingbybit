@@ -70,7 +70,7 @@ def index():
                 api_secret=securet
             )
 
-            # Getting wallet balance
+            # Getting wallet balance, symbol
             wallet = session_auth.get_wallet_balance()
             logging.error('Wallet %s', wallet)
             totalWalletBalance = wallet['result']['USDT']['wallet_balance']
@@ -79,8 +79,11 @@ def index():
             logging.error('Total Available Balance %s', totalAvailableBalance)
 
             # Getting final order price
-            latestInfo = session_auth.latest_information_for_symbol()
+            # Only BTCUSD symbol(others are BTCUSDM21, CROUSDT, QTUMUSDT, LRCUSDT)
+            latestInfo = session_auth.latest_information_for_symbol(symbol="BTCUSD")
             logging.error('LatestInfo %s', latestInfo)
+            index_price = latestInfo['result']['index_price']
+            logging.error('index_price %s', index_price)
 
             # set up new order
             # newOrder = session_auth.place_active_order(

@@ -205,8 +205,8 @@ def dashboard():
 
     return listOrders
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
+@app.route('/dashboard', methods=['GET', 'POST'])
+def neworder():
     session_auth = usdt_perpetual.HTTP(
         endpoint=endpoint,
         api_key=apikey,
@@ -222,6 +222,9 @@ def test():
         time_in_force="GoodTillCancel",
     )
     logging.error('new order %s', newOrder)
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
     if request.method == 'POST':
         logging.error('entire data %s', request.data)
         data = request.data
